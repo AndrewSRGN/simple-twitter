@@ -1,5 +1,9 @@
 import React from "react";
 import classes from "./Post.module.css";
+import PostInfo from "./PostInfo";
+import PostContent from "./PostContent";
+import PostStatistic from "./PostStatistic";
+import PostActions from "./PostActions";
 
 const Post = () => {
     const user = {
@@ -72,52 +76,19 @@ const Post = () => {
         body: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
     };
 
+    const statistic = {
+        comments: comments.length
+    }
+
     return (
         <section className={classes.container}>
-            <div className={classes.info}>
-                <div className={classes.author}>
-                    <img
-                        className={classes.author_avatar}
-                        src={user.photoUrl}
-                        alt="Author"
-                    />
-                    <div className={classes.author_info}>
-                        <div className={classes.author_name}>
-                            {user.name}
-                        </div>
-                        <div className={classes.author_username}>
-                            @{user.username}
-                        </div>
-                    </div>
-                </div>
+            <PostInfo user={user} />
 
-                <div className={classes.options}>
-                    <button className={classes.btn_delete}>
-                        Delete
-                    </button>
-                </div>
-            </div>
+            <PostContent post={post} />
 
-            <article className={classes.content}>
-                <h3 className={classes.title}>
-                    {post.title}
-                </h3>
-                <p className={classes.body}>
-                    {post.body}
-                </p>
-            </article>
+            <PostStatistic statistic={statistic} />
 
-            <div className={classes.statistic}>
-                <div className={classes.statistic_commentsCount}>
-                    {comments.length} Comments
-                </div>
-            </div>
-
-            <div className={classes.actions}>
-                <button className={classes.btn_comment}>
-                    Comment
-                </button>
-            </div>
+            <PostActions />
         </section>
     );
 };
