@@ -43,12 +43,8 @@
     font-weight: bold;
 }
 
-.author_status {
+.author_username {
     font-size: .9rem;
-}
-
-.author_date {
-    font-size: .8rem;
 }
 
 .content {
@@ -57,7 +53,11 @@
     border-bottom: 1px solid teal;
 }
 
-.text {
+.title {
+    margin: 0
+}
+
+.body {
 
 }
 
@@ -68,30 +68,9 @@
     padding: .5em;
 }
 
-.statistic_likesCount {
-    color: green;
-    font-weight: bold;
-}
-
-.statistic_dislikesCount {
-    color: red;
-    font-weight: bold;
-}
-
-.statistic_shareCount {
-    color: blue;
-    font-weight: bold;
-}
-
 .statistic_commentsCount {
     color: black;
     font-weight: bold;
-}
-
-.statistic_reactions {
-    display: flex;
-    flex-direction: row;
-    gap: 1em;
 }
 
 .actions {
@@ -102,25 +81,7 @@
     padding: .5em;
 }
 
-.actions_reactions {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 1em;
-}
-
-.btn_like {
-    color: green;
-}
-
-.btn_dislike {
-    color: red;
-}
-
 .btn_comment {
     color: black;
 }
 
-.btn_share {
-    color: blue;
-}
