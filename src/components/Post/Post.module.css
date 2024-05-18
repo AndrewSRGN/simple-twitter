@@ -1,0 +1,126 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    border: 1px solid teal;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 1rem;
+
+    border-bottom: 1px solid teal;
+
+}
+
+.author {
+    display: flex;
+    flex-direction: row;
+}
+
+.author_avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.author_info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.options {
+    display: flex;
+    flex-direction: row;
+}
+
+.author_name {
+    font-weight: bold;
+}
+
+.author_status {
+    font-size: .9rem;
+}
+
+.author_date {
+    font-size: .8rem;
+}
+
+.content {
+    padding: .5em;
+
+    border-bottom: 1px solid teal;
+}
+
+.text {
+
+}
+
+.statistic {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: .5em;
+}
+
+.statistic_likesCount {
+    color: green;
+    font-weight: bold;
+}
+
+.statistic_dislikesCount {
+    color: red;
+    font-weight: bold;
+}
+
+.statistic_shareCount {
+    color: blue;
+    font-weight: bold;
+}
+
+.statistic_commentsCount {
+    color: black;
+    font-weight: bold;
+}
+
+.statistic_reactions {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1em;
+    padding: .5em;
+}
+
+.actions_reactions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1em;
+}
+
+.btn_like {
+    color: green;
+}
+
+.btn_dislike {
+    color: red;
+}
+
+.btn_comment {
+    color: black;
+}
+
+.btn_share {
+    color: blue;
+}
