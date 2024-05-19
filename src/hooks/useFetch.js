@@ -7,7 +7,7 @@ import {useState} from "react";
  */
 
 export const useFetch = (callbacks) => {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const fetchData = async () => {
