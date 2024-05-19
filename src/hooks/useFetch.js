@@ -6,7 +6,7 @@ import {useState} from "react";
  * @returns {[fetchData:function, isLoading: boolean, error: string | null]}
  */
 
-export const useFetching = (callbacks) => {
+export const useFetch = (callbacks) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
