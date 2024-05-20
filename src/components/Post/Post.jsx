@@ -1,67 +1,28 @@
-import React, {useEffect, useState} from "react";
-import classes from "./Post.module.css";
-import PostInfo from "./PostInfo";
-import PostContent from "./PostContent";
-import PostStatistic from "./PostStatistic";
-import PostActions from "./PostActions";
-import UserService from "../../API/UserService";
-import CommentsService from "../../API/CommentsService";
-import Loader from "../Loader/Loader";
-import Error from "../Error/Error";
-import {useFetch} from "../../hooks/useFetch";
+import React from "react";
+import "./Post.css";
 
-const Post = ({post, handleDeletePost}) => {
-    const [user, setUser] = useState({});
-    const [comments, setComments] = useState([]);
+import Button from "../UI/Button/Button";
 
-    const fetchUser = async () => {
-        const user = await UserService.getUserById(post.userId);
-        user.photoUrl = `https://api.dicebear.com/8.x/pixel-art/svg`;
-        setUser(user);
-    }
-
-    const fetchComments = async () => {
-        const comments = await CommentsService.getCommentsByPostId(post.id);
-        setComments(comments);
-    }
-
-    const callbacks = [fetchUser, fetchComments];
-
-    const [fetchData, isLoading, error] = useFetch(callbacks);
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const statistic = {
-        comments: comments.length
-    }
-
-    if (isLoading) {
-        return (
-            <section className={classes.container}>
-                <Loader center={true}/>
-            </section>
-        );
-    }
-
-    if (error) {
-        return (
-            <section className={classes.container}>
-                <Error error={error} />
-            </section>
-        );
+const Post = ({ remove, ...props }) => {
+    const removePost = () => {
+        const postId = props.post.id;
+        remove(postId)
     }
 
     return (
-        <section className={classes.container}>
-            <PostInfo user={user} />
+        <section className={"post"}>
+            <article className="post__content">
+                <strong>
+                    {props.index}. {props.post.title}
+                </strong>
 
-            <PostContent post={post} />
-
-            <PostStatistic statistic={statistic} />
-
-            <PostActions delete={handleDeletePost}/>
+                <div>{props.post.body}</div>
+            </article>
+            <div className="post__buttons">
+                <Button onClick={removePost}>
+                    Delete
+                </Button>
+            </div>
         </section>
     );
 };
