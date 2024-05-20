@@ -1,16 +1,16 @@
-import React from "react";
+import React, {forwardRef} from "react";
 import "./Post.css";
 
 import Button from "../UI/Button/Button";
 
-const Post = ({ remove, ...props }) => {
+const Post = forwardRef(({ remove, ...props }, ref) => {
     const removePost = () => {
         const postId = props.post.id;
         remove(postId)
     }
 
     return (
-        <section className={"post"}>
+        <section className={"post"} ref={ref}>
             <article className="post__content">
                 <strong>
                     {props.index}. {props.post.title}
@@ -25,6 +25,6 @@ const Post = ({ remove, ...props }) => {
             </div>
         </section>
     );
-};
+});
 
 export default Post;
