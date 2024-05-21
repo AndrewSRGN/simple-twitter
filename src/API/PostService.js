@@ -4,16 +4,22 @@ export default class PostService {
     static async getAll(limit = 10, page = 1) {
         const endpoint = `${this._baseUrl}?_limit=${limit}&_page=${page}`;
         const response = await fetch(endpoint);
-        const json = await response.json();
-        if (Object.keys(json).length === 0) throw new Error('Posts not found');
-        return json;
+        if (response.status !== 200) {
+            throw new Error(`Failed to fetch posts. Status code: ${response.status}`);
+        }
+        const data = await response.json();
+        return {
+            data: data,
+            totalCount: parseInt(response.headers.get('X-Total-Count'))
+        }
     }
 
-    static async getPostById(id) {
+    static async getById(id) {
         const endpoint = `${this._baseUrl}/${id}`;
         const response = await fetch(endpoint);
-        const json = await response.json();
-        if (Object.keys(json).length === 0) throw new Error('Post not found');
-        return json;
+        if (response.status !== 200) {
+            throw new Error(`Failed to fetch post. Status code: ${response.status}`);
+        }
+        return await response.json();
     }
 }
