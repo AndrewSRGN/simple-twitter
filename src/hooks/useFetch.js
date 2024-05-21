@@ -22,10 +22,8 @@ export const useFetch = (callbacks) => {
                 await callbacks();
             }
         } catch (error) {
-            console.error(error);
             setError(error.message);
         } finally {
-            console.log("Data fetched.");
             setIsLoading(false);
         }
     }
