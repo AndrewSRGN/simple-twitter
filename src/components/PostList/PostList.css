@@ -17,11 +17,6 @@
 .post-enter {
     position: relative;
     opacity: 0;
-<<<<<<< HEAD
-=======
-    position: relative;
->>>>>>> 47e4796 (Fix PostList animations)
-    left: -100%;
 }
 
 .post-enter-active {
