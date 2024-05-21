@@ -1,5 +1,5 @@
 export default class PostService {
-    static _baseUrl = 'https://jsonplaceholder.typicode.com/po22sts';
+    static _baseUrl = 'https://jsonplaceholder.typicode.com/posts';
 
     static async getAll(limit = 100, page = 1) {
         const endpoint = `${this._baseUrl}?_limit=${limit}&_page=${page}`;
