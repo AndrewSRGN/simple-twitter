@@ -3,29 +3,26 @@ import Input from "../UI/Input/Input";
 import Select from "../UI/Select/Select";
 
 const PostFilter = ({filter, setFilter}) => {
-
-    const { searchQuery, selectedSort } = filter;
-    const { setSearchQuery, setSelectedSort } = setFilter;
     
     const handleSearch = (e) => {
-        setSearchQuery(e.target.value);
+        setFilter({...filter, query: e.target.value});
     };
 
     const handleSelect = (e) => {
-        setSelectedSort(e.target.value);
+        setFilter({...filter, sortBy: e.target.value});
     };
 
     return (
         <div>
             <Input
-                value={searchQuery}
+                value={filter.query}
                 onChange={handleSearch}
                 type="text"
                 placeholder="Search..."
             />
 
             <Select
-                value={selectedSort}
+                value={filter.sortBy}
                 onChange={handleSelect}
                 defaultValue={"Sort"}
                 options={[
