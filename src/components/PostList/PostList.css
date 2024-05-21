@@ -1,0 +1,40 @@
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+.post-list__title {
+    text-align: center;
+}
+
+.post-list__body {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+.post-enter {
+    position: relative;
+    opacity: 0;
+}
+
+.post-enter-active {
+    position: relative;
+    left: 0;
+    opacity: 1;
+    transition: all 500ms ease-in;
+}
+
+.post-exit {
+    position: relative;
+    left: 0;
+    opacity: 1;
+}
+
+.post-exit-active {
+    position: relative;
+    left: -100%;
+    opacity: 0;
+    transition: all 500ms ease-in;
+}
