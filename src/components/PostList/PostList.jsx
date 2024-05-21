@@ -24,6 +24,7 @@ const PostList = ({title, posts, removePost}) => {
                             classNames="post"
                         >
                             <Post
+                                ref={nodeRef}
                                 remove={removePost}
                                 key={post.id}
                                 index={index + 1}
