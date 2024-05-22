@@ -5,9 +5,14 @@ import { Route, Routes } from "react-router-dom";
 import { publicRoutes } from "../../router/routes";
 import { privateRoutes} from "../../router/routes";
 import { AuthContext } from "../../context/context";
+import Loader from "../Loader/Loader";
 
 function AppRouter() {
-    const { isAuth } = useContext(AuthContext);
+    const { isAuth, isLoading } = useContext(AuthContext);
+
+    if (isLoading) {
+        return <Loader /> ;
+    }
 
     return (
         isAuth ?

@@ -7,8 +7,17 @@ const LoginPage = () => {
     const { setIsAuth } = useContext(AuthContext);
 
     const login = (event) => {
+        let rand = function() {
+            return Math.random().toString(36).substr(2);
+        };
+
+        let token = function() {
+            return rand() + rand();
+        };
+
         event.preventDefault();
         setIsAuth(true);
+        localStorage.setItem('auth', token());
     };
     return (
         <div>
