@@ -27,47 +27,52 @@ function PostListPage() {
     const lastElement = useRef();
 
     const [fetchData, isLoading, error] = useFetch(
-        async (isHardRefresh) => {
+        async () => {
             const response = await PostService.getAll(limit, page);
-            isHardRefresh
-                ? setPosts(response.data) :
-                setPosts([...posts, ...response.data]);
-            setPostsCount(response.totalCount);
-            setTotalPages(getPageCount(response.totalCount, limit));
+            return response;
         }
     );
 
-    useObserver(lastElement, page < totalPages, isLoading, () => {
+    useObserver(lastElement, page < totalPages, isLoading, isEndlessScroll,
+        () => {
         isEndlessScroll && setPage(page + 1);
     });
 
     useEffect(() => {
-        if (isEndlessScroll) {
-            fetchData(false);
-        } else {
-            fetchData(true);
-        }
-    }, [page, limit, isEndlessScroll]);
+        fetchData().then(response => {
+            console.log(`isEndlessScroll: ${isEndlessScroll}`)
+            if (isEndlessScroll) {
+                console.log(`Endless scroll: ${page} ${limit}`);
+                setPosts([...posts, ...response.data]);
+            } else {
+                setPosts(response.data);
+            }
+            setPostsCount(response.totalCount);
+            setTotalPages(getPageCount(response.totalCount, limit));
+        })
+    }, [page, limit]);
 
+    /**
+     * Change limit
+     *
+     * @param newLimit{number|string}
+     */
     const changeLimit = (newLimit) => {
         newLimit = parseInt(newLimit);
 
         if (isEndlessScroll) {
-            setLimit(newLimit);
             setPosts([]);
+            setLimit(newLimit);
             setPage(1);
             return;
         }
 
-        if (newLimit === totalPages) {
+        if (!isEndlessScroll) {
+            const lastPost = (page * limit) - 1;
+            const newPage = Math.ceil(lastPost / newLimit);
             setLimit(newLimit);
-            setPage(1);
-            return;
+            setPage(newPage);
         }
-        const lastPost = page * limit;
-        const newPage = Math.ceil(lastPost / newLimit);
-        setLimit(newLimit);
-        setPage(newPage);
     }
 
     /**
@@ -76,13 +81,17 @@ function PostListPage() {
      * @param endlessScroll {boolean|string}
      */
     const changeEndlessScroll = (endlessScroll) => {
+        // Convert string from e.target.value to boolean
         if (typeof endlessScroll === 'string') {
             endlessScroll = endlessScroll === 'true';
         }
 
-        if (endlessScroll) {
+        // Reset page if endless scroll
+        if (page !== 1) {
             setPosts([]);
-            setPage(1);
+            // If endless scroll turn on - set page to 0, observer set page (page + 1)
+            // IF endless scroll turn off - set page to 1, observer was turned off
+            setPage( endlessScroll ? 0 : 1);
         }
 
         setIsEndlessScroll(endlessScroll);
@@ -140,7 +149,7 @@ function PostListPage() {
                 title={"Post List 1"}
                 posts={searchedAndSortedPosts}
             />
-            <div ref={lastElement} style={{ height: 20, background: 'red' }}></div>
+            <div ref={lastElement} style={{height: 20}}></div>
 
             {isLoading && <Loader center={true} />}
 
