@@ -1,30 +1,35 @@
 import React, {forwardRef} from "react";
 import "./Post.css";
+import {useNavigate} from "react-router-dom";
 
 import Button from "../UI/Button/Button";
-import { Link } from "react-router-dom";
 
-const Post = forwardRef(({ remove, ...props }, ref) => {
+
+const Post = forwardRef(({ remove, post, ...props }, ref) => {
+    const navigate = useNavigate();
+
     const removePost = () => {
-        const postId = props.post.id;
+        const postId = post.id;
         remove(postId)
+    }
+
+    const handleClickOpen = () => {
+        navigate("/posts/" + post.id);
     }
 
     return (
         <section className={"post"} ref={ref}>
             <article className="post__content">
                 <strong>
-                    {props.index}. {props.post.title}
+                    {props.index}. {post.title}
                 </strong>
 
-                <div>{props.post.body}</div>
+                <div>{post.body}</div>
             </article>
             <div className="post__buttons">
-                <Link to={`/posts/${props.post.id}`}>
-                    <Button>
-                        Open
-                    </Button>
-                </Link>
+                <Button onClick={handleClickOpen}>
+                    Open
+                </Button>
                 <Button onClick={removePost}>
                     Delete
                 </Button>
