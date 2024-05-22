@@ -21,7 +21,7 @@ const Post = forwardRef(({ remove, post, ...props }, ref) => {
         <section className={"post"} ref={ref}>
             <article className="post__content">
                 <strong>
-                    {props.index}. {post.title}
+                    {props.index}. {post.title} | Post ID: {post.id}
                 </strong>
 
                 <div>{post.body}</div>
