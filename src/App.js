@@ -1,5 +1,5 @@
 import "./styles/App.css";
-import React from "react";
+import React, { useState } from "react";
 
 import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/UI/Navbar/Navbar";
@@ -7,7 +7,7 @@ import AppRouter from "./components/AppRouter/AppRouter";
 import { AuthContext } from "./context/context";
 
 function App() {
-    const [isAuth, setIsAuth] = React.useState(true);
+    const [isAuth, setIsAuth] = useState(false);
 
     return (
         <AuthContext.Provider value={{

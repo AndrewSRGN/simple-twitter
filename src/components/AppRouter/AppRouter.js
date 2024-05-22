@@ -7,7 +7,7 @@ import { privateRoutes} from "../../router/routes";
 import { AuthContext } from "../../context/context";
 
 function AppRouter() {
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const { isAuth } = useContext(AuthContext);
 
     return (
         isAuth ?
