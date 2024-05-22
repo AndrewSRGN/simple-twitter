@@ -1,6 +1,13 @@
 export default class PostService {
     static _baseUrl = 'https://jsonplaceholder.typicode.com/posts';
 
+    /**
+     * Get all posts
+     *
+     * @param limit - number of elements per page
+     * @param page - number of current page
+     * @returns {Promise<{data: object, totalCount: number}>}
+     */
     static async getAll(limit = 10, page = 1) {
         const endpoint = `${this._baseUrl}?_limit=${limit}&_page=${page}`;
         const response = await fetch(endpoint);
@@ -14,6 +21,12 @@ export default class PostService {
         }
     }
 
+    /**
+     * Get post by id
+     *
+     * @param id - id of post
+     * @returns {Promise<Object>}
+     */
     static async getById(id) {
         const endpoint = `${this._baseUrl}/${id}`;
         const response = await fetch(endpoint);
