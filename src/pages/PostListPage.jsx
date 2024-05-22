@@ -12,7 +12,7 @@ import {useFilterPosts} from "../hooks/usePost";
 import {useFetch} from "../hooks/useFetch";
 import {getPageCount} from "../utils/pages";
 
-function Posts() {
+function PostListPage() {
     const [posts, setPosts] = useState([]);
     const [totalPages, setTotalPages] = useState(0);
     const [limit, setLimit] = useState(10);
@@ -32,7 +32,7 @@ function Posts() {
 
     useEffect(() => {
         fetchData()
-    }, [page]);
+    }, [page, limit]);
 
     const createPost = (post) => {
         setPosts([...posts, post]);
@@ -83,4 +83,4 @@ function Posts() {
     );
 }
 
-export default Posts;
+export default PostListPage;
