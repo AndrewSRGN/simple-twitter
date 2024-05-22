@@ -14,9 +14,10 @@ export const useFetch = (callbacks) => {
     /**
      * Fetches data from the provided callback functions.
      *
+     * @param args - The arguments to pass to the callback functions.
      * @returns {PromiseLike<response | response[] | null>} - A promise that resolves to the response or an array of responses. If an error occurs, it resolves to null.
      */
-    const fetchData = async () => {
+    const fetchData = async (args) => {
         setError(null);
         setIsLoading(true);
 
@@ -26,11 +27,11 @@ export const useFetch = (callbacks) => {
             if (Array.isArray(callbacks)) {
                 callbackResponse = [];
                 for (let i = 0; i < callbacks.length; i++) {
-                    const response = await callbacks[i]();
+                    const response = await callbacks[i](args);
                     callbackResponse.push(response);
                 }
             } else {
-                callbackResponse = await callbacks();
+                callbackResponse = await callbacks(args);
             }
         } catch (error) {
             setError(error.message);
