@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PostList from "../components/PostList/PostList";
 import PostForm from "../components/PostForm/PostForm";
 import PostFilter from "../components/PostFilter/PostFilter";
@@ -11,6 +11,7 @@ import PostService from "../API/PostService";
 import {useFilterPosts} from "../hooks/usePost";
 import {useFetch} from "../hooks/useFetch";
 import {getPageCount} from "../utils/pages";
+import { useObserver } from "../hooks/useObserver";
 
 function PostListPage() {
     const [posts, setPosts] = useState([]);
@@ -19,16 +20,24 @@ function PostListPage() {
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState({sortBy: '', query: ''});
     const [modal, setModal] = useState(false);
+    const lastElement = useRef();
 
     const [fetchData, isLoading, error] = useFetch(
         async () => {
             const posts = await PostService.getAll(limit, page);
-            setPosts(posts.data);
+            setPosts((prevState) => ([...prevState, ...posts.data]));
             setTotalPages(getPageCount(posts.totalCount, limit));
         }
     );
 
     const searchedAndSortedPosts = useFilterPosts(posts, filter);
+
+    useObserver(lastElement,
+        page < totalPages,
+        isLoading,
+        () => {
+        setPage((prevState) => prevState + 1);
+    });
 
     useEffect(() => {
         fetchData()
@@ -44,41 +53,39 @@ function PostListPage() {
 
     return (
         <div className="App">
-            <Button onClick={() => setModal(true)}>
-                Create Post
-            </Button>
+            <Button onClick={() => setModal(true)}>Create Post</Button>
 
-            <Button onClick={fetchData}>
-                Fetch Posts
-            </Button>
+            <Button onClick={fetchData}>Fetch Posts</Button>
 
             <hr />
 
-            <PostFilter
-                filter={filter}
-                setFilter={setFilter}
-            />
+            <PostFilter filter={filter} setFilter={setFilter} />
 
             <Modal visible={modal} setVisible={setModal}>
-                <PostForm create={createPost}/>
+                <PostForm create={createPost} />
             </Modal>
 
             <hr />
 
             {error && <Error error={error} />}
-            {isLoading
-                ? <Loader center={true} />
-                : <PostList
-                    removePost={removePost}
-                    title={"Post List 1"}
-                    posts={searchedAndSortedPosts}
-                />
-            }
+            {isLoading && <Loader center={true} />}
 
-            <Pagination totalPages={totalPages}
-                        currentPage={page}
-                        setCurrentPage={setPage}/>
+            <PostList
+                removePost={removePost}
+                title={"Post List 1"}
+                posts={searchedAndSortedPosts}
+            />
 
+            <div
+                style={{ padding: "15px", background: "red" }}
+                ref={lastElement}
+            ></div>
+
+            <Pagination
+                totalPages={totalPages}
+                currentPage={page}
+                setCurrentPage={setPage}
+            />
         </div>
     );
 }
