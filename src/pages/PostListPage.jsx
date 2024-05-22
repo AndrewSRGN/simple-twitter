@@ -11,7 +11,7 @@ import PostService from "../API/PostService";
 import {useFilterPosts} from "../hooks/usePost";
 import {useFetch} from "../hooks/useFetch";
 import {getPageCount} from "../utils/pages";
-import { useObserver } from "../hooks/useObserver";
+import { useScroll } from "../hooks/useScroll";
 import Select from "../components/UI/Select/Select";
 
 function PostListPage() {
@@ -24,7 +24,8 @@ function PostListPage() {
     const [modal, setModal] = useState(false);
     const [isEndlessScroll, setIsEndlessScroll] = useState(false);
     const searchedAndSortedPosts = useFilterPosts(posts, filter);
-    const lastElement = useRef();
+    const scrollPageRef = useRef();
+    const lastElementRef = useRef();
 
     const [fetchData, isLoading, error] = useFetch(
         async () => {
@@ -33,16 +34,15 @@ function PostListPage() {
         }
     );
 
-    useObserver(lastElement, page < totalPages, isLoading, isEndlessScroll,
-        () => {
-        isEndlessScroll && setPage(page + 1);
-    });
+    const {isIntersecting} = useScroll(lastElementRef, scrollCallback, isEndlessScroll);
 
+    /**
+     * Get posts from API and set them to state in useEffect
+     * dependencies - limit, page, isIntersecting
+     */
     useEffect(() => {
         fetchData().then(response => {
-            console.log(`isEndlessScroll: ${isEndlessScroll}`)
             if (isEndlessScroll) {
-                console.log(`Endless scroll: ${page} ${limit}`);
                 setPosts([...posts, ...response.data]);
             } else {
                 setPosts(response.data);
@@ -50,7 +50,28 @@ function PostListPage() {
             setPostsCount(response.totalCount);
             setTotalPages(getPageCount(response.totalCount, limit));
         })
-    }, [page, limit]);
+    }, [page, limit, isIntersecting]);
+
+    /**
+     * Scroll to top on page change
+     * dependencies - page
+     */
+    useEffect(() => {
+        if (!isEndlessScroll) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, [page]);
+
+
+    /**
+     * Infinite scroll callback
+     * dependencies - isEndlessScroll
+     */
+    function scrollCallback() {
+        if (isEndlessScroll && page < totalPages) {
+            setPage((prevState) => prevState + 1);
+        }
+    }
 
     /**
      * Change limit
@@ -76,14 +97,13 @@ function PostListPage() {
     }
 
     /**
-     * Change endless scroll
-     *
-     * @param endlessScroll {boolean|string}
+     * Switch Infinity scroll and reset page
+     * @param value {boolean|string}
      */
-    const changeEndlessScroll = (endlessScroll) => {
+    const HandleSwitchEndlessScroll = (value) => {
         // Convert string from e.target.value to boolean
-        if (typeof endlessScroll === 'string') {
-            endlessScroll = endlessScroll === 'true';
+        if (typeof value === 'string') {
+            value = value === 'true';
         }
 
         // Reset page if endless scroll
@@ -91,10 +111,10 @@ function PostListPage() {
             setPosts([]);
             // If endless scroll turn on - set page to 0, observer set page (page + 1)
             // IF endless scroll turn off - set page to 1, observer was turned off
-            setPage( endlessScroll ? 0 : 1);
+            setPage( value ? 0 : 1);
         }
 
-        setIsEndlessScroll(endlessScroll);
+        setIsEndlessScroll(value);
     }
 
     const createPost = (post) => {
@@ -106,7 +126,7 @@ function PostListPage() {
     };
 
     return (
-        <div className="App">
+        <div className="App" ref={scrollPageRef}>
             <Button onClick={() => setModal(true)}>Create Post</Button>
 
             <Button onClick={fetchData}>Fetch Posts</Button>
@@ -129,7 +149,7 @@ function PostListPage() {
             <Select
                 defaultValue={"Endless scroll"}
                 value={isEndlessScroll}
-                onChange={e => changeEndlessScroll(e.target.value)}
+                onChange={e => HandleSwitchEndlessScroll(e.target.value)}
                 options={[
                     { value: false, name: "Off" },
                     { value: true, name: "On" },
@@ -149,9 +169,10 @@ function PostListPage() {
                 title={"Post List 1"}
                 posts={searchedAndSortedPosts}
             />
-            <div ref={lastElement} style={{height: 20}}></div>
 
             {isLoading && <Loader center={true} />}
+
+            <div ref={lastElementRef} style={{ height: 20 }}></div>
 
             {!isEndlessScroll && (
                 <Pagination
