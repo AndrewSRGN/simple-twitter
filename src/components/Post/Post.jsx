@@ -2,6 +2,7 @@ import React, {forwardRef} from "react";
 import "./Post.css";
 
 import Button from "../UI/Button/Button";
+import { Link } from "react-router-dom";
 
 const Post = forwardRef(({ remove, ...props }, ref) => {
     const removePost = () => {
@@ -19,6 +20,11 @@ const Post = forwardRef(({ remove, ...props }, ref) => {
                 <div>{props.post.body}</div>
             </article>
             <div className="post__buttons">
+                <Link to={`/posts/${props.post.id}`}>
+                    <Button>
+                        Open
+                    </Button>
+                </Link>
                 <Button onClick={removePost}>
                     Delete
                 </Button>
