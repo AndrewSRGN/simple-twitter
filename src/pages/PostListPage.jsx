@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import PostList from "../components/PostList/PostList";
-import PostForm from "../components/PostForm/PostForm";
+import PostForm from "../components/Form/PostForm/PostForm";
 import PostFilter from "../components/PostFilter/PostFilter";
 import Modal from "../components/Modal/Modal";
 import Button from "../components/UI/Button/Button";
