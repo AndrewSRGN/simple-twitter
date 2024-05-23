@@ -32,12 +32,17 @@ const PostPage = () => {
 
     return (
         <div>
-            {isLoading && <Loader />}
             {error && <Error error={error} />}
-            <Post post={post} />
-            {comments.map(comment => (
-                <Comment key={comment.id} comment={comment} />
-            ))}
+            {isLoading ?
+                <Loader /> :
+                <>
+                    <Post post={post} />
+                    {comments.map(comment => (
+                        <Comment key={comment.id} comment={comment} />
+                    ))}
+                </>
+            }
+
         </div>
     );
 };
