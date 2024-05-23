@@ -1,11 +1,12 @@
 import React from 'react';
 import './Select.css';
 
-const Select = ({ options, defaultValue, value, onChange }) => {
+const Select = ({ options, defaultValue, value, name, onChange }) => {
     return (
         <select
             className="select"
             value={value}
+            name={name}
             onChange={onChange}
         >
             <option

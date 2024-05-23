@@ -1,10 +1,9 @@
-import React, {createRef} from 'react';
+import React, { createRef } from "react";
 import Post from "../Post/Post";
 import './PostList.css';
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 const PostList = ({title, posts, removePost}) => {
-
 
     if (!posts.length) {
         return <h1 style={{ textAlign: "center" }}>Posts not found</h1>;

@@ -6,7 +6,7 @@ export default class PostService {
      *
      * @param limit - number of elements per page
      * @param page - number of current page
-     * @returns {Promise<{data: object, totalCount: number}>}
+     * @returns {Promise<{data: Array<Object>, totalCount: number}>}
      */
     static async getAll(limit = 10, page = 1) {
         const endpoint = `${this._baseUrl}?_limit=${limit}&_page=${page}`;
