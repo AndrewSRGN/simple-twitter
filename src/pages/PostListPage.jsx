@@ -34,7 +34,7 @@ function PostListPage() {
         }
     );
 
-    const {isIntersecting} = useScroll(lastElementRef, scrollCallback, isEndlessScroll);
+    const {isIntersecting} = useScroll(lastElementRef, scrollCallback, isEndlessScroll && !isLoading);
 
     /**
      * Get posts from API and set them to state in useEffect
@@ -123,13 +123,12 @@ function PostListPage() {
 
     const removePost = (postId) => {
         setPosts(posts.filter((post) => post.id !== postId));
+
     };
 
     return (
         <div className="App" ref={scrollPageRef}>
             <Button onClick={() => setModal(true)}>Create Post</Button>
-
-            <Button onClick={fetchData}>Fetch Posts</Button>
 
             <hr />
 
