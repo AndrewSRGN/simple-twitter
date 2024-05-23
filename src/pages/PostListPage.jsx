@@ -29,8 +29,7 @@ function PostListPage() {
 
     const [fetchData, isLoading, error] = useFetch(
         async () => {
-            const response = await PostService.getAll(limit, page);
-            return response;
+            return await PostService.getAll(limit, page);
         }
     );
 
@@ -136,6 +135,7 @@ function PostListPage() {
             <Select
                 defaultValue={"Count of posts"}
                 value={limit}
+                name="count-of-posts"
                 onChange={e => changeLimit(e.target.value)}
                 options={[
                     { value: 5, name: "5" },
@@ -148,6 +148,7 @@ function PostListPage() {
             <Select
                 defaultValue={"Endless scroll"}
                 value={isEndlessScroll}
+                name="endless-scroll"
                 onChange={e => HandleSwitchEndlessScroll(e.target.value)}
                 options={[
                     { value: false, name: "Off" },

@@ -17,12 +17,14 @@ const PostFilter = ({filter, setFilter}) => {
             <Input
                 value={filter.query}
                 onChange={handleSearch}
+                name="search"
                 type="text"
                 placeholder="Search..."
             />
 
             <Select
                 value={filter.sortBy}
+                name="sort"
                 onChange={handleSelect}
                 defaultValue={"Sort"}
                 options={[
